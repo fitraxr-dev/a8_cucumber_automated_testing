@@ -1,0 +1,25 @@
+# Maven build output
+target/
+
+# Compiled classes
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Test/report artifacts
+*.log
+*.tmp
+*.bak
+
+# Cucumber / test reports
+target/cucumber-report.html
+target/surefire-reports/
