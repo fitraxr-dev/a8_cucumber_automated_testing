@@ -63,4 +63,43 @@ public class MyCourseSteps {
     public void halaman_menampilkan_daftar_kursus_yang_sedang_berlangsung() {
         assertNotNull(myCourseAction.getCourseProgressList());
     }
+
+    @When("User klik tab {string}")
+    public void user_klik_tab(String tabName) {
+        if ("Selesai".equalsIgnoreCase(tabName)) {
+            myCourseAction.clickSelesaiTab();
+        } else if ("Dalam Progress".equalsIgnoreCase(tabName)) {
+            myCourseAction.clickDalamProgressTab();
+        }
+    }
+
+    @Then("User diarahkan ke halaman {string} tab {string}")
+    public void user_diarahkan_ke_halaman_tab(String pageName, String tabName) {
+        assertEquals(WebDriverConfig.getBaseUrl() + "my-courses", driver.getCurrentUrl());
+        if ("Selesai".equalsIgnoreCase(tabName)) {
+            assertTrue(myCourseAction.isSelesaiTabActive());
+        } else {
+            assertTrue(myCourseAction.isDalamProgressTabActive());
+        }
+    }
+
+    @Then("Tab {string} aktif dan menampilkan daftar course dengan progress = {string}")
+    public void tab_aktif_dan_menampilkan_daftar_course_dengan_progress(String tabName, String expectedProgress) {
+        java.util.List<com.a7.types.MyCourseProgress> courses = null;
+        if ("Selesai".equalsIgnoreCase(tabName)) {
+            assertTrue(myCourseAction.isSelesaiTabActive());
+            courses = myCourseAction.getCompletedCourseList();
+        } else {
+            assertTrue(myCourseAction.isDalamProgressTabActive());
+            courses = myCourseAction.getCourseProgressList();
+        }
+
+        assertNotNull("Daftar kursus tidak boleh null", courses);
+        assertTrue("Daftar kursus tidak boleh kosong", courses.size() > 0);
+
+        for (com.a7.types.MyCourseProgress course : courses) {
+            System.out.println("Course: " + course.getCourseName() + ", Progress: " + course.getPercentage());
+            assertEquals("Progress harus " + expectedProgress, expectedProgress, course.getPercentage());
+        }
+    }
 }
