@@ -4,4 +4,10 @@ Feature: Login Sebagai Pelajar
         Given User berada di halaman login
         When User memasukkan email valid: "fitra.pelajar@example.com" 
         And User memasukkan password valid: "Fitra.pelajar123"
+        And User klik tombol login
         Then User berhasil login dan diarahkan ke halaman dashboard
+
+    Scenario: User login dengan email dan password kosong
+        Given User berada di halaman login
+        When User langsung klik login
+        Then Sistem menampilkan pesan "Gagal masuk, email harus diisi!"

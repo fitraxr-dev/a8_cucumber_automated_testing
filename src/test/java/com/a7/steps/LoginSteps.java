@@ -8,6 +8,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LoginSteps {
@@ -32,9 +33,14 @@ public class LoginSteps {
         loginAction.enterPassword(password);
     }
 
+    @When("User langsung klik login")
+    @When("User klik tombol login")
+    public void user_klik_tombol_login() {
+        loginAction.clickLogin();
+    }
+
     @Then("User berhasil login dan diarahkan ke halaman dashboard")
     public void user_berhasil_login_dan_diarahkan_ke_halaman_dashboard() {
-        loginAction.clickLogin();
         dashboardAction = new DashboardAction(driver);
 
         boolean isLoaded = dashboardAction.isDashboardLoaded();
@@ -42,6 +48,14 @@ public class LoginSteps {
         System.out.println("Current URL after login: " + current);
 
         assertTrue("Expected dashboard in URL but was: " + current, isLoaded);
+
+        WebDriverConfig.quitDriver();
+    }
+
+    @Then("Sistem menampilkan pesan {string}")
+    public void sistem_menampilkan_pesan(String expectedMessage) {
+        String actualMessage = loginAction.getErrorMessage();
+        assertEquals(expectedMessage, actualMessage);
 
         WebDriverConfig.quitDriver();
     }

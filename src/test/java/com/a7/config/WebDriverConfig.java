@@ -78,4 +78,12 @@ public class WebDriverConfig {
     public static boolean isHeadless() {
         return Boolean.parseBoolean(properties.getProperty("headless", "false"));
     }
+
+    public static void driverWait(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
