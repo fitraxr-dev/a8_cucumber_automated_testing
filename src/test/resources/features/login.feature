@@ -7,7 +7,7 @@ Feature: Login Sebagai Pelajar
         And User klik tombol login
         Then User berhasil login dan diarahkan ke halaman dashboard
 
-    Scenario: User login dengan email dan password kosong
+    Scenario: Email dan Password Kosong
         Given User berada di halaman login
         When User langsung klik login
-        Then Sistem menampilkan pesan "Gagal masuk, email harus diisi!"
+        Then Sistem menampilkan pesan "Login gagal, email dan kata sandi harus diisi"

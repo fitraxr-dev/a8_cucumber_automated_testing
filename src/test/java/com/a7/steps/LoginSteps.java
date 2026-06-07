@@ -1,6 +1,7 @@
 package com.a7.steps;
 
 import com.a7.config.WebDriverConfig;
+import com.a7.context.TestContext;
 import com.a7.action.LoginAction;
 import com.a7.action.DashboardAction;
 import io.cucumber.java.en.Given;
@@ -15,6 +16,10 @@ public class LoginSteps {
     private WebDriver driver;
     private LoginAction loginAction;
     private DashboardAction dashboardAction;
+
+    public LoginSteps(TestContext testContext) {
+        this.driver = testContext.getDriver();
+    }
 
     @Given("User berada di halaman login")
     public void user_berada_di_halaman_login() {

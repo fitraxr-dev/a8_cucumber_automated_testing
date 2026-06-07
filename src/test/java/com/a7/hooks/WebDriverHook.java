@@ -8,7 +8,7 @@ import io.cucumber.java.Before;
 
 public class WebDriverHook {
     private TestContext testContext;
-    
+
     public WebDriverHook(TestContext testContext) {
         this.testContext = testContext;
     }
@@ -17,6 +17,7 @@ public class WebDriverHook {
     public void setUp() {
         WebDriverConfig.initDriver();
         testContext.setDriver(WebDriverConfig.getDriver());
+        testContext.setWait(WebDriverConfig.initDriverWait());
     }
 
     @After

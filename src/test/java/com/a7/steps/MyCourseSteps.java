@@ -3,8 +3,6 @@ package com.a7.steps;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.time.Duration;
-
 import static org.junit.Assert.assertNotNull;
 
 import org.openqa.selenium.WebDriver;
@@ -15,18 +13,22 @@ import com.a7.action.LoginAction;
 import com.a7.action.MyCourseAction;
 import com.a7.config.WebDriverConfig;
 import com.a7.context.TestContext;
+import com.a7.context.pages.LoginPageContext;
+import com.a7.context.pages.MyCoursePageContext;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class MyCourseSteps {
+
     private WebDriver driver;
     private WebDriverWait wait;
+    
     private LoginAction loginAction;
     private MyCourseAction myCourseAction;
 
-    public MyCourseSteps(TestContext testContext) {
+    public MyCourseSteps(TestContext testContext, LoginPageContext loginPageContext, MyCoursePageContext myCoursePageContext) {
         this.driver = testContext.getDriver();
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
@@ -34,7 +36,6 @@ public class MyCourseSteps {
     @Given("User telah login dengan kredesial yang valid")
     public void user_telah_login_dengan_kredesial_yang_valid() {
         driver.get(WebDriverConfig.getBaseUrl());
-        loginAction = new LoginAction(driver);
 
         loginAction.enterUsername("fitra.pelajar@example.com");
         loginAction.enterPassword("Fitra.pelajar123");

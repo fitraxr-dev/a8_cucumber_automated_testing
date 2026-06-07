@@ -1,6 +1,7 @@
 package com.a7.steps;
 
 import com.a7.config.WebDriverConfig;
+import com.a7.context.TestContext;
 import com.a7.action.LoginAction;
 import com.a7.action.DashboardAction;
 import com.a7.pages.LoginPage;
@@ -19,13 +20,19 @@ import static org.junit.Assert.assertEquals;
 
 public class LogoutSteps {
     private WebDriver driver;
+    private WebDriverWait wait;
+
     private LoginAction loginAction;
     private DashboardAction dashboardAction;
     private LoginPage loginPage;
 
+    public LogoutSteps (TestContext testContext) {
+        this.driver = testContext.getDriver();
+        this.wait = testContext.getWait();
+    }
+
     @Given("User sudah login sebagai Pelajar dan sesi aktif")
     public void user_sudah_login_sebagai_pelajar_dan_sesi_aktif() {
-        driver = WebDriverConfig.initDriver();
         driver.get(WebDriverConfig.getBaseUrl());
         
         loginAction = new LoginAction(driver);

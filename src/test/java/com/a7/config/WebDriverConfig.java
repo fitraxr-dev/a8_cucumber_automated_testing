@@ -5,8 +5,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Properties;
 
 public class WebDriverConfig {
@@ -54,6 +56,10 @@ public class WebDriverConfig {
 
         driver.manage().window().maximize();
         return driver;
+    }
+
+    public static WebDriverWait initDriverWait() {
+        return new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public static WebDriver getDriver() {
