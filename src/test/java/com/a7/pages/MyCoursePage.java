@@ -25,11 +25,14 @@ public class MyCoursePage {
     @FindBy(css = ".card-body-mycourse")
     private List<WebElement> courseProgressListRaw;
 
-    private List<MyCourseProgress> courseProgressList = new ArrayList<>();
+    @FindBy(css = "#inprogress .card-body-mycourse, #inprogress .card.custom-card")
+    private List<WebElement> inprogressCoursesRaw;
+
+    @FindBy(css = "#completed .card-body-mycourse, #completed .card.custom-card")
+    private List<WebElement> completedCoursesRaw;
 
     public MyCoursePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
-        courseProgressList = parseCourseProgressList();
     }
 
     public WebElement getKursusSayaButton() {
@@ -53,14 +56,22 @@ public class MyCoursePage {
     }
 
     public List<MyCourseProgress> getCourseProgressList() {
-        return courseProgressList;
+        return parseCourseProgressList(courseProgressListRaw);
     }
 
-    public List<MyCourseProgress> parseCourseProgressList() {
-        List<MyCourseProgress> resultList = new ArrayList<>();
+    public List<MyCourseProgress> getInProgressCourseList() {
+        return parseCourseProgressList(inprogressCoursesRaw);
+    }
 
-        // PERBAIKAN 3: Loop sekarang valid karena courseProgressListRaw adalah List
-        for (WebElement courseProgress : this.courseProgressListRaw) {
+    public List<MyCourseProgress> getCompletedCourseList() {
+        return parseCourseProgressList(completedCoursesRaw);
+    }
+
+    public List<MyCourseProgress> parseCourseProgressList(List<WebElement> rawList) {
+        List<MyCourseProgress> resultList = new ArrayList<>();
+        if (rawList == null) return resultList;
+
+        for (WebElement courseProgress : rawList) {
             String courseName = courseProgress.findElement(By.cssSelector(".card-title")).getText().trim();
             String lecturerName = courseProgress.findElement(By.cssSelector(".card-text")).getText().trim();
             String percentage = courseProgress.findElement(By.cssSelector(".progress-percentage")).getText().trim();

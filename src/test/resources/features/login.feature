@@ -1,5 +1,6 @@
 Feature: Login Sebagai Pelajar
 
+    @author-amr
     Scenario: User bisa login dengan kredensial yang valid
         Given User berada di halaman login
         When User memasukkan email valid: "fitra.pelajar@example.com" 

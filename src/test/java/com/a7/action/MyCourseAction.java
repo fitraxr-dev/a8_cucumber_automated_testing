@@ -30,10 +30,14 @@ public class MyCourseAction {
     }
 
     public void clickSelesaiTab() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.urlContains("my-courses"));
         waitForElement(myCoursePage.getSelesaiTabButton()).click();
     }
 
     public void clickDalamProgressTab() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.urlContains("my-courses"));
         waitForElement(myCoursePage.getDalamProgressTabButton()).click();
     }
 
@@ -41,8 +45,16 @@ public class MyCourseAction {
         return waitForElement(myCoursePage.getDalamProgressTabButton()).getAttribute("class").contains("active");
     }
 
+    public boolean isSelesaiTabActive() {
+        return waitForElement(myCoursePage.getSelesaiTabButton()).getAttribute("class").contains("active");
+    }
+
     public List<MyCourseProgress> getCourseProgressList() {
         return myCoursePage.getCourseProgressList();
+    }
+
+    public List<MyCourseProgress> getCompletedCourseList() {
+        return myCoursePage.getCompletedCourseList();
     }
 
 }
