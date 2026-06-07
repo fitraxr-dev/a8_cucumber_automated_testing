@@ -40,4 +40,8 @@ public class DashboardAction {
     public void clickKeluar() {
         dashboardPage.getLogoutButton().click();
     }
+
+    public void clickMyCourses() {
+        dashboardPage.getMyCoursesNavbarLink().click();
+    }
 }
