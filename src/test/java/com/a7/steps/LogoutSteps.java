@@ -1,6 +1,9 @@
 package com.a7.steps;
 
 import com.a7.config.WebDriverConfig;
+import com.a7.context.TestContext;
+import com.a7.context.pages.DashboardPageContext;
+import com.a7.context.pages.LoginPageContext;
 import com.a7.action.LoginAction;
 import com.a7.action.DashboardAction;
 import com.a7.pages.LoginPage;
@@ -12,20 +15,28 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class LogoutSteps {
     private WebDriver driver;
+    private WebDriverWait wait;
+
     private LoginAction loginAction;
     private DashboardAction dashboardAction;
     private LoginPage loginPage;
 
+    public LogoutSteps (TestContext testContext, LoginPageContext loginPageContext, DashboardPageContext dashboardPageContext) {
+        this.driver = testContext.getDriver();
+        this.wait = testContext.getWait();
+
+        this.loginAction = loginPageContext.getLoginAction();
+        this.dashboardAction = dashboardPageContext.getDashboardAction();
+
+    }
+
     @Given("User sudah login sebagai Pelajar dan sesi aktif")
     public void user_sudah_login_sebagai_pelajar_dan_sesi_aktif() {
-        driver = WebDriverConfig.initDriver();
         driver.get(WebDriverConfig.getBaseUrl());
         
         loginAction = new LoginAction(driver);
@@ -53,11 +64,11 @@ public class LogoutSteps {
         String expectedUrl = WebDriverConfig.getBaseUrl();
         String expectedUrlAlt = expectedUrl.endsWith("/") ? expectedUrl.substring(0, expectedUrl.length() - 1) : expectedUrl;
 
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.or(
-                    ExpectedConditions.urlToBe(expectedUrl),
-                    ExpectedConditions.urlToBe(expectedUrlAlt)
-                ));
+        
+        wait.until(ExpectedConditions.or(
+            ExpectedConditions.urlToBe(expectedUrl),
+            ExpectedConditions.urlToBe(expectedUrlAlt)
+        ));
         
         String currentUrl = driver.getCurrentUrl();
         System.out.println("URL after logout: " + currentUrl);
@@ -84,11 +95,10 @@ public class LogoutSteps {
         String expectedUrl = WebDriverConfig.getBaseUrl();
         String expectedUrlAlt = expectedUrl.endsWith("/") ? expectedUrl.substring(0, expectedUrl.length() - 1) : expectedUrl;
         
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.or(
-                    ExpectedConditions.urlToBe(expectedUrl),
-                    ExpectedConditions.urlToBe(expectedUrlAlt)
-                ));
+        wait.until(ExpectedConditions.or(
+            ExpectedConditions.urlToBe(expectedUrl),
+            ExpectedConditions.urlToBe(expectedUrlAlt)
+        ));
         
         String currentUrl = driver.getCurrentUrl();
         System.out.println("URL after trying to access dashboard unauthenticated: " + currentUrl);
@@ -96,7 +106,5 @@ public class LogoutSteps {
         String cleanCurrent = currentUrl.endsWith("/") ? currentUrl.substring(0, currentUrl.length() - 1) : currentUrl;
         String cleanExpected = expectedUrl.endsWith("/") ? expectedUrl.substring(0, expectedUrl.length() - 1) : expectedUrl;
         assertEquals("Akses tanpa autentikasi harus dialihkan ke halaman login", cleanExpected, cleanCurrent);
-        
-        WebDriverConfig.quitDriver();
     }
 }

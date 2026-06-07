@@ -16,6 +16,9 @@ public class LoginPage {
     @FindBy(css = ".btn-danger")
     private WebElement loginButton;
 
+    @FindBy(css = "#swal2-html-container")
+    private WebElement errorMessage;
+
     public LoginPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
@@ -30,5 +33,9 @@ public class LoginPage {
 
     public WebElement getLoginButton() {
         return loginButton;
+    }
+
+    public WebElement getErrorMessage() {
+        return errorMessage;
     }
 }

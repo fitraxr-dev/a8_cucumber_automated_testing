@@ -27,4 +27,8 @@ public class LoginAction {
         loginPage.getLoginButton().click();
         return new DashboardPage(driver);
     }
+
+    public String getErrorMessage() {
+        return loginPage.getErrorMessage().getText();
+    }
 }
