@@ -12,7 +12,6 @@ import com.a7.pages.MyCoursePage;
 import com.a7.types.MyCourseProgress;
 
 public class MyCourseAction {
-    private WebDriverWait wait;
     private WebDriver driver;
     private MyCoursePage myCoursePage;
 
