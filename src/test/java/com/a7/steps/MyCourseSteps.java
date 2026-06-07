@@ -30,7 +30,10 @@ public class MyCourseSteps {
 
     public MyCourseSteps(TestContext testContext, LoginPageContext loginPageContext, MyCoursePageContext myCoursePageContext) {
         this.driver = testContext.getDriver();
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = testContext.getWait();
+
+        this.loginAction = loginPageContext.getLoginAction();
+        this.myCourseAction = myCoursePageContext.getMyCourseAction();
     }
 
     @Given("User telah login dengan kredesial yang valid")
