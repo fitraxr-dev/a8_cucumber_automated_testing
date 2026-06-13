@@ -8,7 +8,8 @@ Feature: Login Sebagai Pelajar
         And User klik tombol login
         Then User berhasil login dan diarahkan ke halaman dashboard
 
-    Scenario: Email dan Password Kosong
+    @author-fitra
+    Scenario: Login Dengan Email dan Password Kosong
         Given User berada di halaman login
         When User langsung klik login
         Then Sistem menampilkan pesan "Login gagal, email dan kata sandi harus diisi"

@@ -37,29 +37,54 @@ public class WebDriverConfig {
         String browser = properties.getProperty("browser");
 
         if ("chrome".equalsIgnoreCase(browser)) {
-            ChromeOptions options = new ChromeOptions();
-            String browserBinary = properties.getProperty("browserBinary");
-            if (browserBinary != null && !browserBinary.isBlank()) {
-                options.setBinary(browserBinary);
-            }
-            driver = new ChromeDriver(options);
+            driver = createChromeDriver();
         } else if ("firefox".equalsIgnoreCase(browser)) {
-            FirefoxOptions options = new FirefoxOptions();
-            String browserBinary = properties.getProperty("browserBinary");
-            if (browserBinary != null && !browserBinary.isBlank()) {
-                options.setBinary(browserBinary);
-            }
-            driver = new FirefoxDriver(options);
+            driver = createFirefoxDriver();
         } else {
             throw new RuntimeException("Browser tidak didukung: " + browser);
         }
 
-        driver.manage().window().maximize();
+        if (!isHeadless()) {
+            driver.manage().window().maximize();
+        }
+
         return driver;
     }
 
+    private static WebDriver createChromeDriver() {
+        ChromeOptions options = new ChromeOptions();
+
+        if (isHeadless()) {
+            options.addArguments("--headless");
+        }
+
+        String browserBinary = properties.getProperty("browserBinary");
+        if (browserBinary != null && !browserBinary.isBlank()) {
+            options.setBinary(browserBinary);
+        }
+
+        return new ChromeDriver(options);
+    }
+
+    private static WebDriver createFirefoxDriver() {
+        FirefoxOptions options = new FirefoxOptions();
+
+        // 1. Konsumsi property headless untuk Firefox
+        if (isHeadless()) {
+            options.addArguments("-headless");
+        }
+
+        // 2. Konsumsi property browserBinary
+        String browserBinary = properties.getProperty("browserBinary");
+        if (browserBinary != null && !browserBinary.isBlank()) {
+            options.setBinary(browserBinary);
+        }
+
+        return new FirefoxDriver(options);
+    }
+
     public static WebDriverWait initDriverWait() {
-        return new WebDriverWait(driver, Duration.ofSeconds(10));
+        return new WebDriverWait(driver, Duration.ofSeconds(Integer.parseInt(properties.getProperty("timeout"))));
     }
 
     public static WebDriver getDriver() {
@@ -74,22 +99,12 @@ public class WebDriverConfig {
     }
 
     public static String getBaseUrl() {
+        // Diperbaiki: menghapus spasi di "baseUrl"
         return properties.getProperty("baseUrl");
     }
 
-    public static int getImplicitWait() {
-        return Integer.parseInt(properties.getProperty("implicitWait", "10"));
+    private static boolean isHeadless() {
+        return Boolean.parseBoolean(properties.getProperty("headless"));
     }
 
-    public static boolean isHeadless() {
-        return Boolean.parseBoolean(properties.getProperty("headless", "false"));
-    }
-
-    public static void driverWait(int milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
 }
