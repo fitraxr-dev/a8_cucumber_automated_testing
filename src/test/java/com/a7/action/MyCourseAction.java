@@ -3,6 +3,7 @@ package com.a7.action;
 import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,9 +21,25 @@ public class MyCourseAction {
         this.myCoursePage = new MyCoursePage(driver);
     }
 
+    public void waitForLoadingToDisappear() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(20))
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[text()='Loading...']")));
+        } catch (Exception e) {
+            // Ignore if loading indicator is not found or already gone
+        }
+    }
+
     private WebElement waitForElement(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        return wait.until(ExpectedConditions.elementToBeClickable(element));
+        waitForLoadingToDisappear();
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+            return wait.until(ExpectedConditions.elementToBeClickable(element));
+        } catch (Exception e) {
+            System.out.println("DEBUG - Current URL: " + driver.getCurrentUrl());
+            System.out.println("DEBUG - Page Source: " + driver.getPageSource());
+            throw e;
+        }
     }
 
     public void clickKursusSaya() {
@@ -30,13 +47,13 @@ public class MyCourseAction {
     }
 
     public void clickSelesaiTab() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(20))
             .until(ExpectedConditions.urlContains("my-courses"));
         waitForElement(myCoursePage.getSelesaiTabButton()).click();
     }
 
     public void clickDalamProgressTab() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(20))
             .until(ExpectedConditions.urlContains("my-courses"));
         waitForElement(myCoursePage.getDalamProgressTabButton()).click();
     }

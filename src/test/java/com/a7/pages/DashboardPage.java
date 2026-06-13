@@ -13,6 +13,9 @@ public class DashboardPage {
     @FindBy(xpath = "//button[contains(@class, 'dropdown-button') and text()='Keluar']")
     private WebElement logoutButton;
 
+    @FindBy(xpath = "//a[contains(@class, 'nav-link') and text()='Kursus Saya']")
+    private WebElement myCoursesNavbarLink;
+
     public DashboardPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
@@ -23,5 +26,9 @@ public class DashboardPage {
 
     public WebElement getLogoutButton() {
         return logoutButton;
+    }
+
+    public WebElement getMyCoursesNavbarLink() {
+        return myCoursesNavbarLink;
     }
 }

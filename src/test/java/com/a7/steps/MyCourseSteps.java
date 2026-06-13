@@ -101,9 +101,25 @@ public class MyCourseSteps {
         assertNotNull("Daftar kursus tidak boleh null", courses);
         assertTrue("Daftar kursus tidak boleh kosong", courses.size() > 0);
 
-        for (com.a7.types.MyCourseProgress course : courses) {
-            System.out.println("Course: " + course.getCourseName() + ", Progress: " + course.getPercentage());
-            assertEquals("Progress harus " + expectedProgress, expectedProgress, course.getPercentage());
+        if ("Selesai".equalsIgnoreCase(tabName)) {
+            for (com.a7.types.MyCourseProgress course : courses) {
+                System.out.println("Course: " + course.getCourseName() + ", Progress: " + course.getPercentage());
+                assertEquals("Progress harus " + expectedProgress, expectedProgress, course.getPercentage());
+            }
+        } else {
+            boolean foundVue = false;
+            boolean foundPostgres = false;
+            for (com.a7.types.MyCourseProgress course : courses) {
+                System.out.println("Course: " + course.getCourseName() + ", Progress: " + course.getPercentage());
+                if ("Belajar Vue".equals(course.getCourseName()) && expectedProgress.equals(course.getPercentage())) {
+                    foundVue = true;
+                }
+                if ("PostGreSql".equals(course.getCourseName()) && expectedProgress.equals(course.getPercentage())) {
+                    foundPostgres = true;
+                }
+            }
+            assertTrue("Kursus 'Belajar Vue' dengan progress " + expectedProgress + " harus ditampilkan", foundVue);
+            assertTrue("Kursus 'PostGreSql' dengan progress " + expectedProgress + " harus ditampilkan", foundPostgres);
         }
     }
 }

@@ -1,5 +1,5 @@
 Feature: Logout Sebagai Pelajar
-
+    @logout @author-micho
     Scenario: Proses logout manual – role Pelajar
         Given User sudah login sebagai Pelajar dan sesi aktif
         When User mengklik dropdown Nama Akun pada navbar
